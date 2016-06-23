@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Hotelite</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <!-- modernizr enables HTML5 elements and feature detects -->
+  <script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
+</head>
+
+
+<body class="Create">
+  <div id="main">
+
+    <div id="top_split">
+
+	<header>
+    <div id="main">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="/">Hot<span class="logo_colour">elite</span></a></h1>
+          <div id="login">
+            {% if user.is_authenticated %}
+            <h2>  Eres: <a href="/{{user}}"> {{user}}</a> <a href="logout/"> LOGOUT </a> </h2>
+            {% endif %}
+          </div>
+          <h2> Nunca buscar un hotel fue tan fácil.</h2>
+        </div>
+      </div>
+      <nav>
+        <ul class="sf-menu" id="nav">
+          <li class="selected"><a href="/">Home</a></li>
+          <li><a href="/alojamientos">Todos</a></li>
+          <li><a href="/about">About</a></li>
+      </nav>
+
+      <ul id="images">
+        <li><img src="images/1.jpg" width="600" height="300" alt="gallery_buildings_one" /></li>
+        <li><img src="images/2.jpg" width="600" height="300" alt="gallery_buildings_two" /></li>
+        <li><img src="images/3.jpg" width="600" height="300" alt="gallery_buildings_three" /></li>
+        <li><img src="images/4.jpg" width="600" height="300" alt="gallery_buildings_four" /></li>
+        <li><img src="images/5.jpg" width="600" height="300" alt="gallery_buildings_five" /></li>
+        <li><img src="images/6.jpg" width="600" height="300" alt="gallery_buildings_six" /></li>
+      </ul>
+
+	</header>
+
+	</div>
+
+	<div id="site_content">
+      <div id="sidebar_container">
+        <div class="sidebar">
+          <h3> Páginas de Usuario: </h3>
+          <h4>
+            <ul>
+              {% for config in allConfig %}
+                {% if config.title == "default" %}
+                  <li><a href="/{{config.user.username}}"> Pagina de {{config.user.username}}</a></li>
+                {% else %}
+                  <li><a href="/{{config.user.username}}"> {{config.title}}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          <form action="" method="POST">
+          {% csrf_token %}
+          <h1> Ver XML: </h1> <input type="submit" value="Enviar"/>
+          </form>
+        </br>
+          {% if not user.is_authenticated %}
+          <td><h3> Registrate: </h3>
+          <form action="register/" method="POST">
+            {% csrf_token %}
+            <p>Nickname: <input type="text" name="login" value="" placeholder="Username" autocomplete="off"></p>
+            <p>Password: <input type="password" name="password" value="" placeholder="Password"></p>
+            <input type="submit" value="Enviar"/>
+          </form></td>
+          <br>
+          <td><h3> Loguéate: </h3>
+            <form action="login/" method="POST">
+            {% csrf_token %}
+            <p>Nickname: <input type="text" name="login" value="" placeholder="Username" autocomplete="off"></p>
+            <p>Password: <input type="password" name="password" value="" placeholder="Password" ></p>
+            <input type="submit" value="Enviar"/>
+          </form></td>
+          {% endif %}
+        </div>
+      </div>
+      <div class="content">
+        <h1> Lista de Hoteles más comentados: </h1>
+        <ul>
+        {% for hotel, img in hotelList %}
+          <p><li>Nombre: <b>{{hotel.name}}</b></li></p>
+          <p> Direccion: {{hotel.address}}</p>
+          <img src="{{img}}" width="100" height="100" alt="Doble grande" border="0"/>
+          <p><a href="/alojamientos/{{hotel.id}}"> Mas informacion </a>
+        {% endfor %}
+      </ul>
+      </div>
+    </div>
+    <footer>
+      <p>Esta aplicación utiliza datos del portal de datos abierto de la ciudad de Madrid <a href="http://cursosweb.github.io/etc/alojamientos_es.xml"> ver </a></p>
+    </footer>
+  </div>
+  <p>&nbsp;</p>
+  <!-- javascript at the bottom for fast page loading -->
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery.easing-sooper.js"></script>
+  <script type="text/javascript" src="js/jquery.sooperfish.js"></script>
+  <script type="text/javascript" src="js/jquery.kwicks-1.5.1.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#images').kwicks({
+        max : 600,
+        spacing : 2
+      });
+      $('ul.sf-menu').sooperfish();
+    });
+  </script>
+</body>
+</html>
